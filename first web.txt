@@ -1,0 +1,52 @@
+import { ReactNode, createContext, useContext, useState, useEffect } from "react";
+
+interface SessionContextType {
+  username: string;
+  signIn: (username: string) => void;
+  signOut: () => void;
+}
+
+const SessionContext = createContext<SessionContextType>({
+  username: "",
+  signIn: () => {},
+  signOut: () => {},
+});
+
+export function SessionProvider({ children }: { children: ReactNode }) {
+  const [username, setUsername] = useState<string>("");
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(JSON.parse(storedUsername));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (username) {
+      localStorage.setItem("username", JSON.stringify(username));
+    } else {
+      localStorage.removeItem("username");
+    }
+  }, [username]);
+
+  const signIn = (username: string) => {
+    setUsername(username);
+    document.location.href = "/";
+  };
+
+  const signOut = () => {
+    setUsername("");
+    document.location.href = "/sign-in";
+  };
+
+  return (
+    <SessionContext.Provider value={{ username, signIn, signOut }}>
+      {children}
+    </SessionContext.Provider>
+  );
+}
+
+export function useSession() {
+  return useContext(SessionContext);
+}
