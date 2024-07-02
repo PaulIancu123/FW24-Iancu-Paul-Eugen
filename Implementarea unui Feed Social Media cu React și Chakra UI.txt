@@ -1,0 +1,81 @@
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Flex,
+  Heading,
+  Text,
+  Icon,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { FaHeart } from "react-icons/fa";
+
+const Post = ({ username, timeAgo, date, message, likes }: any) => {
+  const [likeCount, setLikeCount] = useState(likes);
+
+  const handleLike = () => {
+    setLikeCount((prevLikes) => prevLikes + 1);
+  };
+
+  return (
+    <Card bg="blackAlpha.900" width="60%" mx="auto" my="4">
+      <CardHeader>
+        <Flex align="center" gap="3">
+          <Heading as="h1" size="md" fontWeight="bold">
+            {username}
+          </Heading>
+          <Text as="h2" size="sm" fontWeight="light">
+            {timeAgo} - {date}
+          </Text>
+        </Flex>
+      </CardHeader>
+      <Divider />
+      <CardBody>
+        <Text>{message}</Text>
+      </CardBody>
+      <Divider />
+      <CardFooter>
+        <Button
+          leftIcon={<Icon as={FaHeart} />}
+          onClick={handleLike}
+          colorScheme="red"
+        >
+          {likeCount}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+export default function Feed() {
+  const posts = [
+    {
+      username: "Username",
+      timeAgo: "19h ago",
+      date: "27.06.2024",
+      message:
+        "This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message. This is my message.",
+      likes: 966,
+    },
+    // Poți adăuga mai multe postări aici
+  ];
+
+  return (
+    <Box as="main">
+      {posts.map((post, index) => (
+        <Post
+          key={index}
+          username={post.username}
+          timeAgo={post.timeAgo}
+          date={post.date}
+          message={post.message}
+          likes={post.likes}
+        />
+      ))}
+    </Box>
+  );
+}
