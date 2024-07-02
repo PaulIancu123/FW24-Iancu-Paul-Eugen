@@ -1,0 +1,12 @@
+#include<stdio.h>
+int main(int argc, char *argv[]){
+	if(arg>1)
+{
+	printf("Salut din container, %s\n",argv[1]);
+}
+else
+	{
+	printf("Salut din container!\n");
+}
+return 0;
+}
